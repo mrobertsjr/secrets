@@ -46,11 +46,11 @@ app.get("/register", function (req, res) {
 });
 
 
-app.post('/register'), (req, res) => {
+app.post('/register', (req, res) => {
     const email = req.body.username;
     const password = req.body.password;
     const newUser = new User({
-        email: username,
+        email: email,
         password: password
     });
     newUser.save((err) => {
@@ -60,7 +60,23 @@ app.post('/register'), (req, res) => {
             res.render('secrets');
         }
     });
-}
+});
+
+app.post('/login', (req, res) => {
+    const email = req.body.username;
+    const password = req.body.password;
+    User.findOne({email: email}, (err, foundUser) => {
+        if(err) {
+            console.log(err);
+        } else {
+            if (foundUser) {
+                if (foundUser.password === password) {
+                    res.render('secrets');
+                }
+            }
+        }
+    });
+});
 
 
 
